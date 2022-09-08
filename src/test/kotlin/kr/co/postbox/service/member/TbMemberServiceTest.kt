@@ -5,6 +5,7 @@ import kr.co.postbox.code.Sex
 import kr.co.postbox.dto.member.MemberSaveDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,16 +21,17 @@ internal class TbMemberServiceTest{
 
     @Test
     fun duplicationNumber(){
-        var checkPhoneNumber = memberService.checkPhoneNumber("01022347292")
+        val checkPhoneNumber = memberService.checkPhoneNumber("01022347292")
 
         println(checkPhoneNumber)
     }
 
     @Test
+    @Order(1)
     @DisplayName("회원가입")
     fun register(){
-        var phoneNumber:String = "01022347292"
-        var memberSaveDTO = MemberSaveDTO(
+        val phoneNumber = "01022347292"
+        val memberSaveDTO = MemberSaveDTO(
             "윤태호",
             "01022347292",
             30,
@@ -41,12 +43,11 @@ internal class TbMemberServiceTest{
             "리틀킹덤",
             CodeYn.Y,
             CodeYn.Y,
-            "1234",
             null
         )
 
-        var register = memberService.register(memberSaveDTO)
-        println(register.regDt)
+        val register = memberService.register(memberSaveDTO)
+        println(register.phoneNumber)
         assertEquals(register.phoneNumber,phoneNumber)
     }
 

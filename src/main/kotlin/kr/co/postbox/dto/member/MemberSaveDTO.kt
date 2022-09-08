@@ -28,8 +28,6 @@ data class MemberSaveDTO (
     var public:CodeYn,
     @ApiModelProperty(value = "마케팅 수신 여부")
     var marketingAgree: CodeYn,
-    @ApiModelProperty(value = "비밀번호")
-    var memberPassword:String,
     @ApiModelProperty(value = "첨부 파일")
     var profileImg: MultipartFile?
 )
