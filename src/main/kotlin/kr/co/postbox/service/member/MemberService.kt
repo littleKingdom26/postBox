@@ -2,6 +2,7 @@ package kr.co.postbox.service.member
 
 import kr.co.postbox.code.Path
 import kr.co.postbox.code.Role
+import kr.co.postbox.config.exception.PostBoxException
 import kr.co.postbox.dto.member.MemberResultDTO
 import kr.co.postbox.dto.member.MemberSaveDTO
 import kr.co.postbox.entity.file.TbPostBoxFile
@@ -44,7 +45,7 @@ class MemberService {
         val encoderPassword = passwordEncoder.encode(password)
 
         val member = TbMember(
-            memberSaveDTO.phoneNumber,
+            memberSaveDTO.phoneNumber.replace("-",""),
             memberSaveDTO.name,
             memberSaveDTO.age,
             memberSaveDTO.sex.name,
@@ -77,6 +78,16 @@ class MemberService {
 
         return MemberResultDTO(memberRepository.save(member))
 
+    }
+
+    /**
+    * 회원정보 조회
+     */
+    fun findById(memberKey: Long) : MemberResultDTO {
+        val member = memberRepository.findById(memberKey).orElseThrow {
+            throw PostBoxException("MEMBER.NOT_FOUND")
+        }
+        return MemberResultDTO(member)
     }
 
 

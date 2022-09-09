@@ -47,9 +47,9 @@ internal class SignRestControllerTest{
 
     @Test
     @Order(1)
-    @DisplayName("전화번호_중복_체크")
+    @DisplayName("전화번호_가입여부_체크")
     fun check_id() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/sign/check/01022347292"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sign/check/1111"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(MockMvcResultHandlers.print())
@@ -63,7 +63,7 @@ internal class SignRestControllerTest{
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
-        info.set("phoneNumber","01022347292")
+        info.set("phoneNumber","010")
         info.set("name","윤태")
         info.set("age","41")
         info.set("sex", Sex.male.name)
@@ -92,10 +92,6 @@ internal class SignRestControllerTest{
     @DisplayName("회원가입_중복가입")
     fun register_duplication() {
 
-
-        val file_1 = ClassPathResource("testFile/1.jpg").file
-        val uploadFile_1 = FileInputStream(file_1)
-        val multipartFile_1 = MockMultipartFile("profileImg", file_1.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile_1)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
         info.set("phoneNumber", "01022347292")
         info.set("name", "윤태")
@@ -108,13 +104,6 @@ internal class SignRestControllerTest{
         info.set("nickName", "리틀킹덤")
         info.set("public", "Y")
         info.set("marketingAgree", "N")
-
-        mockMvc.perform(
-            MockMvcRequestBuilders.multipart("/api/sign/register")
-                .file(multipartFile_1)
-                .params(info)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-        )
 
         val file = ClassPathResource("testFile/1.jpg").file
         val uploadFile = FileInputStream(file)

@@ -18,7 +18,7 @@ class JwtAuthenticationEntryPoint(val messageSource: MessageSource): Authenticat
     private val log = LoggerFactory.getLogger(JwtAuthenticationEntryPoint::class.java)
 
     override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
-        log.debug("request.requestURI {}", request.requestURI);
+        log.debug("request.requestURI {}", request.requestURI)
         val body = ApiResponse.error(messageSource.getMessage("UNAUTHORIZED", null, Locale.getDefault()), "UNAUTHORIZED")
         response.status = HttpServletResponse.SC_UNAUTHORIZED
         response.contentType = MediaType.APPLICATION_JSON_VALUE

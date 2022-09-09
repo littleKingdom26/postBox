@@ -8,8 +8,10 @@ import kr.co.postbox.dto.member.MemberSaveDTO
 import kr.co.postbox.service.member.MemberService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.MessageSource
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @Api(tags = ["SignUp API"], description = "회원가입 api 리스트")
@@ -21,7 +23,10 @@ class SignRestController {
     @set:Autowired
     lateinit var memberService: MemberService
 
-    @ApiOperation(value = "전화번호 중복 체크 ", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @set:Autowired
+    lateinit var messageSource: MessageSource
+
+    @ApiOperation(value = "전화번호 가입유무 ", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @GetMapping(value=["/check/{phoneNumber}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun duplicationPhoneNumber(@PathVariable("phoneNumber") phoneNumber:String): ApiResponse {
         log.info("SignUpRestController.duplicationPhoneNumber")
@@ -29,7 +34,7 @@ class SignRestController {
         return when (memberService.checkPhoneNumber(phoneNumber)) {
             0L -> ApiResponse.ok()
             else -> {
-                throw PostBoxException("SIGNUP.ID.DUPLICATE")
+                ApiResponse.error(messageSource.getMessage("SIGNUP.ID.DUPLICATE", null, Locale.getDefault()))
             }
         }
     }

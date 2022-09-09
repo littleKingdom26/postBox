@@ -31,7 +31,7 @@ class UserService:UserDetailsService {
         val loginUser: TbMember? = memberRepository.findByPhoneNumber(username)
         if (loginUser != null) {
             val user: TbMember = loginUser
-            return AuthUserDTO(user.phoneNumber, user.memberPassword, user.memberKey, user.nickName, user.role)
+            return AuthUserDTO(user.phoneNumber, user.memberPassword, user.memberKey?:0L, user.nickName, user.role)
         }else{
             log.debug("message {}", messageSource.getMessage("LOGIN.ERROR", null, Locale.getDefault()))
             throw PostBoxException("LOGIN.ERROR")

@@ -1,8 +1,8 @@
 package kr.co.postbox.config.security
 
 import kr.co.ats.camping.config.security.UserAuthenticationFilter
-import kr.co.postbox.config.jwt.JwtAuthenticationEntryPoint
 import kr.co.postbox.config.handler.PostBoxAccessDeniedHandler
+import kr.co.postbox.config.jwt.JwtAuthenticationEntryPoint
 import kr.co.postbox.config.jwt.JwtAuthenticationFilter
 import kr.co.postbox.service.user.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Configurable
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Lazy
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -61,10 +60,8 @@ class SecurityConfig(
         http
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/notice").hasRole("ADMIN")
             .antMatchers("/api/member/**").authenticated()
-            .antMatchers(HttpMethod.GET,"/api/**").permitAll()
-            .antMatchers("/api/login", "/api/signUp/**","/imageView/**","/fileDownload/**").permitAll()
+            .antMatchers("/api/login", "/api/sign/**","/imageView/**","/fileDownload/**").permitAll()
             .anyRequest().authenticated()
             .and().cors()
             .and().addFilter(JwtAuthenticationFilter(authenticationManagerBean(), userService))

@@ -13,7 +13,8 @@ var si:String?,
 var dong:String?,
 var introduce:String?,
 var nickName:String?,
-var public:String) {
+var public:String,
+var memberKey:Long?) {
     constructor(tbMember: TbMember) : this(
     tbMember.phoneNumber,
     tbMember.name,
@@ -24,14 +25,14 @@ var public:String) {
     tbMember.dong,
     tbMember.introduce,
     tbMember.nickName,
-    tbMember.public
+    tbMember.public,
+    tbMember.memberKey
     )
 
     fun getMemberName():String{
-        return if(public == CodeYn.Y.name){
-            return name
-        }else{
-            return nickName?:""
+        return when (public) {
+            CodeYn.Y.name -> name
+            else -> nickName ?: ""
         }
     }
 }
