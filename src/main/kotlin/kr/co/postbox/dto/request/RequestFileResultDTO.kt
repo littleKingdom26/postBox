@@ -1,0 +1,15 @@
+package kr.co.postbox.dto.request
+
+import kr.co.postbox.entity.request.TbRequestFile
+
+data class RequestFileResultDTO(
+    var originalFileName: String,
+    var fileName: String,
+    var filePath: String,
+    var fileSize: Long) {
+    constructor(tbRequestFile: TbRequestFile) : this(
+        originalFileName =  tbRequestFile.originalFileName,
+        fileName = tbRequestFile.fileName,
+        filePath = tbRequestFile.filePath,
+        fileSize = tbRequestFile.fileSize)
+}

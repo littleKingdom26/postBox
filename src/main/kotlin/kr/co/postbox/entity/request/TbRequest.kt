@@ -14,7 +14,8 @@ import javax.persistence.*
 class TbRequest(
     var title:String,
     var category:String,
-    var detail:String,
+    var sex:String,
+    var detail:String?,
     var negotiationYn:String,
     var price:Long,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "tbRequest")

@@ -35,7 +35,7 @@ internal class TbMemberServiceTest{
             "윤태호",
             "01022347292",
             30,
-            Sex.male,
+            Sex.MALE,
             "경기도 수원시 권선구 호매실로165번길 30",
             "수원시 권선구",
             "호매실동",
