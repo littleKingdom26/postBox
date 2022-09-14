@@ -1,6 +1,8 @@
 package kr.co.postbox.dto.request
 
 import io.swagger.annotations.ApiModelProperty
+import kr.co.postbox.code.RequestCategory
+import kr.co.postbox.code.RequestSex
 import kr.co.postbox.entity.request.TbRequest
 
 data class RequestResultDTO(
@@ -31,4 +33,12 @@ data class RequestResultDTO(
         price = tbRequest.price,
         imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) }
     )
+
+    fun getCategoryName():String{
+        return RequestCategory.valueOf(category).codeName
+    }
+
+    fun getSexName():String{
+        return RequestSex.valueOf(sex).codeName
+    }
 }

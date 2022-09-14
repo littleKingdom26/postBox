@@ -70,4 +70,56 @@ internal class RequestRestControllerTest{
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
     }
+
+    @Test
+    @DisplayName("의뢰수정_없는_키")
+    fun update_false(){
+        val file = ClassPathResource("testFile/1.jpg").file
+        val uploadFile = FileInputStream(file)
+        val multipartFile = MockMultipartFile("requestFileList", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
+        val info: MultiValueMap<String, String> = LinkedMultiValueMap()
+        info.set("title", "도움요청!!")
+        info.set("category", RequestCategory.HELP.name)
+        info.set("sex", RequestSex.ALL.name)
+        info.set("detail", "도와줘유 ~")
+        info.set("price", "10000")
+        info.set("negotiationYn", CodeYn.N.name)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/api/request/update/10000")
+                .file(multipartFile)
+                .params(info)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+        )
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("의뢰수정")
+    fun update() {
+        val file = ClassPathResource("testFile/1.jpg").file
+        val uploadFile = FileInputStream(file)
+        val multipartFile = MockMultipartFile("requestFileList", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
+        val info: MultiValueMap<String, String> = LinkedMultiValueMap()
+        info.set("title", "수정합니다!!")
+        info.set("category", RequestCategory.HELP.name)
+        info.set("sex", RequestSex.FEMALE.name)
+        info.set("detail", "수정!!")
+        info.set("price", "100000")
+        info.set("negotiationYn", CodeYn.Y.name)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/api/request/update/2")
+                .file(multipartFile)
+                .params(info)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+    }
 }

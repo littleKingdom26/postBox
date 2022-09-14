@@ -1,5 +1,6 @@
 package kr.co.postbox.entity.request
 
+import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.entity.BaseTimeEntity
 import kr.co.postbox.entity.aid.TbAid
 import org.hibernate.annotations.DynamicInsert
@@ -23,7 +24,17 @@ class TbRequest(
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
     var requestFileList:List<TbRequestFile>?=null
     ):BaseTimeEntity() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var requestKey: Long? = null
+
+    fun update(requestUpdateDTO: RequestUpdateDTO) {
+        this.title = requestUpdateDTO.title
+        this.category = requestUpdateDTO.category.name
+        this.sex = requestUpdateDTO.sex.name
+        this.detail = requestUpdateDTO.detail?:this.detail
+        this.negotiationYn = requestUpdateDTO.negotiationYn.name
+        this.price = requestUpdateDTO.price?:this.price
+    }
 }

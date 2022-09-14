@@ -63,7 +63,7 @@ internal class SignRestControllerTest{
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
-        info.set("phoneNumber","010-1234-5678")
+        info.set("phoneNumber","010-1222-4444")
         info.set("name","윤태호")
         info.set("age","41")
         info.set("sex", Sex.MALE.name)

@@ -24,11 +24,13 @@ class MemberRestController {
     lateinit var memberService: MemberService
 
 
+    // 프로필 정보 조회
     @GetMapping(value= ["/info"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun memberInfo(@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
         log.info("MemberRestController.memberInfo")
         log.debug(authUserDTO.memberKey.toString())
         return ApiResponse.ok(memberService.findById(authUserDTO.memberKey))
-
     }
+
+    // 프로필 수정
 }
