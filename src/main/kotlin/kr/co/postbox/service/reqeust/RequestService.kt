@@ -10,10 +10,12 @@ import kr.co.postbox.entity.request.TbRequest
 import kr.co.postbox.entity.request.TbRequestFile
 import kr.co.postbox.repository.request.ReqeustFileRepository
 import kr.co.postbox.repository.request.RequestRepository
+import kr.co.postbox.utils.delete
 import kr.co.postbox.utils.save
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 
 @Service
@@ -29,12 +31,13 @@ class RequestService {
     @Value("\${file.upload.path}")
     lateinit var root: String
 
+    @Transactional
     fun save(requestSaveDTO: RequestSaveDTO) : RequestResultDTO {
 
         val tbRequest = TbRequest(
             requestSaveDTO.title,
-            requestSaveDTO.category.codeName,
-            requestSaveDTO.sex.codeName,
+            requestSaveDTO.category.name,
+            requestSaveDTO.sex.name,
             requestSaveDTO.detail ?: "",
             requestSaveDTO.negotiationYn.name,
             requestSaveDTO.price ?: -1,
@@ -44,20 +47,11 @@ class RequestService {
         val requestSaveEntity = requestRepository.save(tbRequest)
 
         val fileResultList = mutableListOf<TbRequestFile>()
-        requestFileSave(requestSaveDTO.requestFileList, requestSaveEntity, fileResultList)
-        requestSaveDTO.requestFileList?.forEach { multipartFile ->
-            val fileResultDTO = multipartFile.save(Path.REQUEST.path, root)
-            val save = requestFileRepository.save(
-                TbRequestFile(
-                    multipartFile.originalFilename ?: "",
-                    fileResultDTO.fileName,
-                    fileResultDTO.filePath,
-                    fileResultDTO.fileSize ?: 0, requestSaveEntity
-                )
-            )
-            fileResultList.add(save)
+        try{
+            requestFileSave(requestSaveDTO.requestFileList, requestSaveEntity, fileResultList)
+        }catch (e:Exception){
+            throw PostBoxException("REQUEST.SAVE.ERROR")
         }
-
         requestSaveEntity.requestFileList=fileResultList
 
         return RequestResultDTO(requestSaveEntity)
@@ -66,6 +60,7 @@ class RequestService {
     /*
     의뢰 수정
      */
+    @Transactional
     fun update(requestUpdateDTO: RequestUpdateDTO,authUserDTO: AuthUserDTO):RequestResultDTO {
         val findById = requestRepository.findById(requestUpdateDTO.requestKey)
 
@@ -75,7 +70,12 @@ class RequestService {
         }
         request.update(requestUpdateDTO)
         val fileResultList = mutableListOf<TbRequestFile>()
-        requestFileSave(requestUpdateDTO.requestFileList, request, fileResultList)
+        try{
+            requestFileSave(requestUpdateDTO.requestFileList, request, fileResultList)
+        }catch (e:Exception){
+            throw PostBoxException("REQUEST.UPDATE.ERROR")
+        }
+
         if (fileResultList.isNotEmpty()) {
             request.requestFileList = request.requestFileList?.plus(fileResultList)
         }
@@ -94,6 +94,30 @@ class RequestService {
                 )
             )
             fileResultList.add(save)
+        }
+    }
+
+    /**
+     * 의뢰 조회
+     */
+    fun findByRequest(requestKey: Long) :RequestResultDTO {
+        return RequestResultDTO(requestRepository.findById(requestKey).orElseThrow { throw PostBoxException("REQUEST.NOT_FOUND") })
+
+    }
+
+    /**
+     * 의뢰 파일 삭제
+     */
+    @Transactional
+    fun requestFileDelete(requestKey: Long, requestFileKey: Long) {
+        val request = requestRepository.findById(requestKey).orElseThrow { throw PostBoxException("REQUEST.NOT_FOUND") }
+        val requestFileList = request.requestFileList?.filter { tbRequestFile -> tbRequestFile.requestFileKey == requestFileKey }?.toList()
+        if (requestFileList.isNullOrEmpty()) {
+            throw PostBoxException("REQUEST.FILE.NOT_FOUND")
+        }
+        requestFileList.forEach {
+            it.delete(root)
+            requestFileRepository.delete(it)
         }
     }
 }

@@ -1,6 +1,7 @@
 package kr.co.postbox.utils
 
 import kr.co.postbox.dto.file.FileResultDTO
+import kr.co.postbox.entity.request.TbRequestFile
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
@@ -20,6 +21,13 @@ fun MultipartFile?.save(subFolder: String?,root:String): FileResultDTO {
     newFile.createNewFile()
     this?.transferTo(newFile)
     return FileResultDTO(newFileName, subFolder?: "default", this?.size, newFilePath)
+}
+
+fun TbRequestFile.delete(root:String){
+    val filePath = this.filePath
+    val fileName = this.fileName
+    val file = File(root + File.separator + filePath + File.separator + fileName)
+    takeIf { file.isFile }?.let { file.delete() }
 }
 
 fun String?.encodePassword(passwordEncoder: PasswordEncoder):String?{

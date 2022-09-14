@@ -28,7 +28,7 @@ class UserService:UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
         // 유저 조회가 필요함
         log.debug("username : {}",username)
-        val loginUser: TbMember? = memberRepository.findByPhoneNumber(username)
+        val loginUser: TbMember? = memberRepository.findByPhoneNumber(username.replace("-",""))
         if (loginUser != null) {
             val user: TbMember = loginUser
             return AuthUserDTO(user.phoneNumber, user.memberPassword, user.memberKey?:0L, user.nickName, user.role)

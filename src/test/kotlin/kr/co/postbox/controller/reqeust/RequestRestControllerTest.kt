@@ -122,4 +122,26 @@ internal class RequestRestControllerTest{
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
     }
+
+    @Test
+    @DisplayName("상세조회")
+    fun detail() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/request/detail/6")
+
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("파일삭제")
+    fun fileDelete(){
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/api/request/6/1")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andDo(MockMvcResultHandlers.print())
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MemberService {
@@ -39,9 +40,12 @@ class MemberService {
         return memberRepository.countByPhoneNumber(phoneNumber.replace("-",""))
     }
 
+    /**
+     * 회원등록
+     */
+    @Transactional
     fun register(memberSaveDTO: MemberSaveDTO) : MemberResultDTO {
-        log.debug("password : ${password}")
-        log.debug("root : ${root}")
+
         val encoderPassword = passwordEncoder.encode(password)
 
         val member = TbMember(

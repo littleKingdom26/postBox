@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -39,12 +41,25 @@ class RequestRestController {
     @PostMapping(value = ["/update/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun update(requestUpdateDTO: RequestUpdateDTO,@PathVariable("requestKey") requestKey: Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO) : ApiResponse{
         log.info("RequestRestController.update")
-        log.debug("$requestUpdateDTO")
-        log.debug("$requestKey")
         requestUpdateDTO.requestKey = requestKey
         return ApiResponse.ok(requestService.update(requestUpdateDTO,authUserDTO))
     }
 
+    // 상세보기
+    @ApiOperation(value="의뢰 상세보기",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @GetMapping(value=["/detail/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun detail(@PathVariable("requestKey") requestKey: Long) : ApiResponse{
+        return ApiResponse.ok(requestService.findByRequest(requestKey))
+    }
+
+    // 파일 삭제
+    @ApiOperation(value="의뢰파일삭제",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @DeleteMapping(value=["/{requestKey}/{requestFileKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun requestFileDelete(@PathVariable("requestKey") requestKey: Long , @PathVariable("requestFileKey") requestFileKey:Long):ApiResponse{
+        requestService.requestFileDelete(requestKey,requestFileKey)
+        return ApiResponse.error()
+
+    }
 
     // 목록
 
