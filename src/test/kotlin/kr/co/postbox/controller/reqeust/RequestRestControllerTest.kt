@@ -139,7 +139,7 @@ internal class RequestRestControllerTest{
     @DisplayName("파일삭제")
     fun fileDelete(){
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/api/request/6/1")
+            MockMvcRequestBuilders.delete("/api/request/6/17")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())

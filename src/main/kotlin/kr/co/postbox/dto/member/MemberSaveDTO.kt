@@ -24,8 +24,10 @@ data class MemberSaveDTO (
     var introduce:String?,
     @ApiModelProperty(value = "닉네임")
     var nickName:String?,
+    @ApiModelProperty(value = "닉네임 소개")
+    var nickNameYn: CodeYn,
     @ApiModelProperty(value = "정보공개여부")
-    var public:CodeYn,
+    var publicYn: CodeYn,
     @ApiModelProperty(value = "마케팅 수신 여부")
     var marketingAgree: CodeYn,
     @ApiModelProperty(value = "첨부 파일")

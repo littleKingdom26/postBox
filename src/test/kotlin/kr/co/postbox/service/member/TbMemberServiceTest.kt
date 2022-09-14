@@ -43,6 +43,7 @@ internal class TbMemberServiceTest{
             "리틀킹덤",
             CodeYn.Y,
             CodeYn.Y,
+            CodeYn.Y,
             null
         )
 

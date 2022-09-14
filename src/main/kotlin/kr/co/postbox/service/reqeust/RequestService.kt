@@ -8,10 +8,11 @@ import kr.co.postbox.dto.request.RequestSaveDTO
 import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.entity.request.TbRequest
 import kr.co.postbox.entity.request.TbRequestFile
-import kr.co.postbox.repository.request.ReqeustFileRepository
+import kr.co.postbox.repository.request.RequestFileRepository
 import kr.co.postbox.repository.request.RequestRepository
 import kr.co.postbox.utils.delete
 import kr.co.postbox.utils.save
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -21,11 +22,13 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class RequestService {
 
+    private val log = LoggerFactory.getLogger(RequestService::class.java)
+
     @set:Autowired
     lateinit var requestRepository: RequestRepository
 
     @set:Autowired
-    lateinit var requestFileRepository: ReqeustFileRepository
+    lateinit var requestFileRepository: RequestFileRepository
 
 
     @Value("\${file.upload.path}")
@@ -75,10 +78,6 @@ class RequestService {
         }catch (e:Exception){
             throw PostBoxException("REQUEST.UPDATE.ERROR")
         }
-
-        if (fileResultList.isNotEmpty()) {
-            request.requestFileList = request.requestFileList?.plus(fileResultList)
-        }
         return RequestResultDTO(request)
     }
 
@@ -100,6 +99,7 @@ class RequestService {
     /**
      * 의뢰 조회
      */
+
     fun findByRequest(requestKey: Long) :RequestResultDTO {
         return RequestResultDTO(requestRepository.findById(requestKey).orElseThrow { throw PostBoxException("REQUEST.NOT_FOUND") })
 
@@ -109,15 +109,15 @@ class RequestService {
      * 의뢰 파일 삭제
      */
     @Transactional
-    fun requestFileDelete(requestKey: Long, requestFileKey: Long) {
-        val request = requestRepository.findById(requestKey).orElseThrow { throw PostBoxException("REQUEST.NOT_FOUND") }
-        val requestFileList = request.requestFileList?.filter { tbRequestFile -> tbRequestFile.requestFileKey == requestFileKey }?.toList()
-        if (requestFileList.isNullOrEmpty()) {
-            throw PostBoxException("REQUEST.FILE.NOT_FOUND")
+    fun requestFileDelete(authUserDTO: AuthUserDTO,requestKey: Long, requestFileKey: Long) {
+        val requestFile = requestFileRepository.findByRequestFileKeyAndRequest_RequestKeyAndRegId(requestFileKey, requestKey, authUserDTO.phoneNumber).orElseThrow { throw PostBoxException("REQUEST.FILE.NOT_FOUND") }
+        try{
+            requestFile.delete(root)
+        }catch (e:Exception){
+            e.printStackTrace()
+            log.debug("파일없음")
         }
-        requestFileList.forEach {
-            it.delete(root)
-            requestFileRepository.delete(it)
-        }
+        requestFileRepository.delete(requestFile)
+
     }
 }

@@ -2,8 +2,7 @@ package kr.co.postbox.controller.signUp
 
 import kr.co.postbox.code.Sex
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.MethodOrderer.*
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
@@ -18,12 +17,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.filter.CharacterEncodingFilter
 import java.io.FileInputStream
-import javax.transaction.Transactional
 
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -63,7 +62,7 @@ internal class SignRestControllerTest{
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
-        info.set("phoneNumber","010-1222-4444")
+        info.set("phoneNumber","010-2234-7292")
         info.set("name","윤태호")
         info.set("age","41")
         info.set("sex", Sex.MALE.name)
@@ -72,7 +71,8 @@ internal class SignRestControllerTest{
         info.set("dong","호매실")
         info.set("introduce","")
         info.set("nickName","리틀킹덤")
-        info.set("public","Y")
+        info.set("nickNameYn","Y")
+        info.set("publicYn","N")
         info.set("marketingAgree","N")
 
         mockMvc.perform(
@@ -102,7 +102,8 @@ internal class SignRestControllerTest{
         info.set("dong", "호매실")
         info.set("introduce", "")
         info.set("nickName", "리틀킹덤")
-        info.set("public", "Y")
+        info.set("nickNameYn", "Y")
+        info.set("publicYn", "N")
         info.set("marketingAgree", "N")
 
         val file = ClassPathResource("testFile/1.jpg").file

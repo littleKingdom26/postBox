@@ -49,15 +49,17 @@ class RequestRestController {
     @ApiOperation(value="의뢰 상세보기",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @GetMapping(value=["/detail/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun detail(@PathVariable("requestKey") requestKey: Long) : ApiResponse{
+        log.info("RequestRestController.detail")
         return ApiResponse.ok(requestService.findByRequest(requestKey))
     }
 
     // 파일 삭제
     @ApiOperation(value="의뢰파일삭제",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @DeleteMapping(value=["/{requestKey}/{requestFileKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun requestFileDelete(@PathVariable("requestKey") requestKey: Long , @PathVariable("requestFileKey") requestFileKey:Long):ApiResponse{
-        requestService.requestFileDelete(requestKey,requestFileKey)
-        return ApiResponse.error()
+    fun requestFileDelete(@PathVariable("requestKey") requestKey: Long , @PathVariable("requestFileKey") requestFileKey:Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO):ApiResponse{
+        log.info("RequestRestController.requestFileDelete")
+        requestService.requestFileDelete(authUserDTO,requestKey,requestFileKey)
+        return ApiResponse.ok()
 
     }
 
