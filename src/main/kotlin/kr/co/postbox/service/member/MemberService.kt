@@ -3,8 +3,10 @@ package kr.co.postbox.service.member
 import kr.co.postbox.code.Path
 import kr.co.postbox.code.Role
 import kr.co.postbox.config.exception.PostBoxException
+import kr.co.postbox.dto.authUser.AuthUserDTO
 import kr.co.postbox.dto.member.MemberResultDTO
 import kr.co.postbox.dto.member.MemberSaveDTO
+import kr.co.postbox.dto.member.MemberUpdateDTO
 import kr.co.postbox.entity.file.TbPostBoxFile
 import kr.co.postbox.entity.member.TbMember
 import kr.co.postbox.repository.file.PostBoxFileRepository
@@ -93,6 +95,10 @@ class MemberService {
             throw PostBoxException("MEMBER.NOT_FOUND")
         }
         return MemberResultDTO(member)
+    }
+
+    fun update(memberUpdateDTO: MemberUpdateDTO, authUserDTO: AuthUserDTO) {
+        memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("") }
     }
 
 

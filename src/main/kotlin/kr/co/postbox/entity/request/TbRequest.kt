@@ -3,6 +3,7 @@ package kr.co.postbox.entity.request
 import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.entity.BaseTimeEntity
 import kr.co.postbox.entity.aid.TbAid
+import kr.co.postbox.entity.member.TbMember
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*
@@ -22,7 +23,10 @@ class TbRequest(
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "tbRequest")
     var aidList:List<TbAid>?=null,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
-    var requestFileList:List<TbRequestFile>?=null
+    var requestFileList:List<TbRequestFile>?=null,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="MEMBER_KEY")
+    var member:TbMember
     ):BaseTimeEntity() {
 
     @Id

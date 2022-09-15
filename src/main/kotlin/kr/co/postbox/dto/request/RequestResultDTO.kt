@@ -3,6 +3,7 @@ package kr.co.postbox.dto.request
 import io.swagger.annotations.ApiModelProperty
 import kr.co.postbox.code.RequestCategory
 import kr.co.postbox.code.RequestSex
+import kr.co.postbox.dto.member.MemberResultDTO
 import kr.co.postbox.entity.request.TbRequest
 
 data class RequestResultDTO(
@@ -21,7 +22,9 @@ data class RequestResultDTO(
     @ApiModelProperty(value = "가격", required = true)
     var price:Long,
     @ApiModelProperty(value = "이미지 리스트")
-    var imgFileList:List<RequestFileResultDTO>?
+    var imgFileList:List<RequestFileResultDTO>?,
+    @ApiModelProperty(value="작성자")
+    var member: MemberResultDTO
 ) {
     constructor(tbRequest: TbRequest) : this(
         requestKey = tbRequest.requestKey,
@@ -31,7 +34,8 @@ data class RequestResultDTO(
         sex = tbRequest.sex,
         negotiationYn = tbRequest.negotiationYn,
         price = tbRequest.price,
-        imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) }
+        imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) },
+        member = MemberResultDTO(tbRequest.member)
     )
 
     fun getCategoryName():String{

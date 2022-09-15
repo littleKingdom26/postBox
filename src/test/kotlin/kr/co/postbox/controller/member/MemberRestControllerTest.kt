@@ -1,5 +1,6 @@
 package kr.co.postbox.controller.member
 
+import kr.co.postbox.code.CodeYn
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -64,11 +65,11 @@ internal class MemberRestControllerTest{
 
         info.set("introduce", "")
         info.set("nickName", "리틀킹덤")
-        info.set("public", "Y")
-
+        info.set("publicYn", CodeYn.Y.name)
+        info.set("nickNameYn",CodeYn.N.name)
 
         mockMvc.perform(
-            MockMvcRequestBuilders.multipart("/api/sign/register")
+            MockMvcRequestBuilders.multipart("/api/member/update")
                 .file(multipartFile)
                 .params(info)
                 .contentType(MediaType.MULTIPART_FORM_DATA)

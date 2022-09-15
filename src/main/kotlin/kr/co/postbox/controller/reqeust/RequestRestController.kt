@@ -33,7 +33,7 @@ class RequestRestController {
     @PostMapping(value = ["/save"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun save(requestSaveDTO: RequestSaveDTO, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO) : ApiResponse{
         log.info("RequestRestController.save")
-        return ApiResponse.ok(requestService.save(requestSaveDTO))
+        return ApiResponse.ok(requestService.save(requestSaveDTO,authUserDTO))
     }
 
     //수정 [파일 추가]

@@ -8,6 +8,7 @@ import kr.co.postbox.dto.request.RequestSaveDTO
 import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.entity.request.TbRequest
 import kr.co.postbox.entity.request.TbRequestFile
+import kr.co.postbox.repository.member.MemberRepository
 import kr.co.postbox.repository.request.RequestFileRepository
 import kr.co.postbox.repository.request.RequestRepository
 import kr.co.postbox.utils.delete
@@ -30,12 +31,17 @@ class RequestService {
     @set:Autowired
     lateinit var requestFileRepository: RequestFileRepository
 
+    @set:Autowired
+    lateinit var memberRepository: MemberRepository
+
 
     @Value("\${file.upload.path}")
     lateinit var root: String
 
     @Transactional
-    fun save(requestSaveDTO: RequestSaveDTO) : RequestResultDTO {
+    fun save(requestSaveDTO: RequestSaveDTO, authUserDTO: AuthUserDTO) : RequestResultDTO {
+
+        val member = memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("MEMBER.NOT_FOUND") }
 
         val tbRequest = TbRequest(
             requestSaveDTO.title,
@@ -45,7 +51,8 @@ class RequestService {
             requestSaveDTO.negotiationYn.name,
             requestSaveDTO.price ?: -1,
             null,
-            null
+            null,
+            member
         )
         val requestSaveEntity = requestRepository.save(tbRequest)
 
