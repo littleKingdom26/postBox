@@ -51,20 +51,19 @@ internal class MemberRestControllerTest{
     fun memberInfo(){
         mockMvc.perform(MockMvcRequestBuilders.get("/api/member/info"))
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(MockMvcResultHandlers.print())
     }
 
     @Test
-    @DisplayName("회원정보 수정")
-    fun memberUpdate(){
-        val file = ClassPathResource("testFile/1.jpg").file
+    @DisplayName("회원정보 수정_파일_같이수정")
+    fun memberUpdateAddFile(){
+        val file = ClassPathResource("testFile/2.jpg").file
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
 
-        info.set("introduce", "")
-        info.set("nickName", "리틀킹덤")
+        info.set("introduce", "자기소개 수정해봅니다.")
+        info.set("nickName", "테리")
         info.set("publicYn", CodeYn.Y.name)
         info.set("nickNameYn",CodeYn.N.name)
 
@@ -75,9 +74,40 @@ internal class MemberRestControllerTest{
                 .contentType(MediaType.MULTIPART_FORM_DATA)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("회원정보 수정")
+    fun memberUpdateNoFile() {
+
+        val info: MultiValueMap<String, String> = LinkedMultiValueMap()
+
+        info.set("introduce", "자기소개 수정해봅니다.")
+        info.set("nickName", "테리")
+        info.set("publicYn", CodeYn.Y.name)
+        info.set("nickNameYn", CodeYn.N.name)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/api/member/update")
+                .params(info)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("회원프로필 삭제")
+    fun memberFileDelete(){
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/api/member/delete/1"))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+
     }
 
 }

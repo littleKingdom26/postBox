@@ -7,10 +7,11 @@ import kr.co.postbox.dto.authUser.AuthUserDTO
 import kr.co.postbox.dto.member.MemberResultDTO
 import kr.co.postbox.dto.member.MemberSaveDTO
 import kr.co.postbox.dto.member.MemberUpdateDTO
-import kr.co.postbox.entity.file.TbPostBoxFile
+import kr.co.postbox.entity.member.TbMemberFile
 import kr.co.postbox.entity.member.TbMember
-import kr.co.postbox.repository.file.PostBoxFileRepository
+import kr.co.postbox.repository.file.MemberFileRepository
 import kr.co.postbox.repository.member.MemberRepository
+import kr.co.postbox.utils.delete
 import kr.co.postbox.utils.save
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,7 +37,7 @@ class MemberService {
     lateinit var passwordEncoder: PasswordEncoder
 
     @set:Autowired
-    lateinit var postBoxFileRepository: PostBoxFileRepository
+    lateinit var memberFileRepository: MemberFileRepository
 
     fun checkPhoneNumber(phoneNumber: String): Long {
         return memberRepository.countByPhoneNumber(phoneNumber.replace("-",""))
@@ -70,14 +71,14 @@ class MemberService {
         )
 
         if (memberSaveDTO.profileImg != null) {
-            val save = memberSaveDTO.profileImg.save(Path.PROFILE.path, root)
+            val fileResultDTO = memberSaveDTO.profileImg.save(Path.PROFILE.path, root)
 
-            val postBoxFile = postBoxFileRepository.save(
-                TbPostBoxFile(
+            val postBoxFile = memberFileRepository.save(
+                TbMemberFile(
                     memberSaveDTO.profileImg?.originalFilename ?: "",
-                    save.fileName,
-                    save.filePath,
-                    save.fileSize ?: 0L
+                    fileResultDTO.fileName,
+                    fileResultDTO.filePath,
+                    fileResultDTO.fileSize ?: 0L
                 )
             )
             member.profileImg=postBoxFile
@@ -97,8 +98,33 @@ class MemberService {
         return MemberResultDTO(member)
     }
 
-    fun update(memberUpdateDTO: MemberUpdateDTO, authUserDTO: AuthUserDTO) {
-        memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("") }
+
+    @Transactional
+    fun update(memberUpdateDTO: MemberUpdateDTO, authUserDTO: AuthUserDTO) : MemberResultDTO {
+
+
+        val member = memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("MEMBER.NOT_FOUND") }
+
+        member.update(memberUpdateDTO)
+
+        if (memberUpdateDTO.profileImg != null) {
+            val fileResultDTO = memberUpdateDTO.profileImg.save(Path.PROFILE.path, root)
+            val postBoxFile = memberFileRepository.save(
+                TbMemberFile(
+                    memberUpdateDTO.profileImg?.originalFilename ?: "",
+                    fileResultDTO.fileName,
+                    fileResultDTO.filePath,
+                    fileResultDTO.fileSize ?: 0L
+                )
+            )
+            // 기존 파일 삭제
+            member.profileImg?.also { memberFileRepository.delete(it) }
+            member.profileImg?.delete(root)
+            member.profileImg = postBoxFile
+        }
+
+        return MemberResultDTO(member)
+
     }
 
 

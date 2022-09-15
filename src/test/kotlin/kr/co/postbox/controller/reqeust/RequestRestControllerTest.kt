@@ -66,7 +66,6 @@ internal class RequestRestControllerTest{
                 .contentType(MediaType.MULTIPART_FORM_DATA)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
     }
@@ -92,7 +91,6 @@ internal class RequestRestControllerTest{
                 .contentType(MediaType.MULTIPART_FORM_DATA)
         )
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
             .andDo(MockMvcResultHandlers.print())
     }
@@ -118,7 +116,6 @@ internal class RequestRestControllerTest{
                 .contentType(MediaType.MULTIPART_FORM_DATA)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
     }
@@ -131,7 +128,6 @@ internal class RequestRestControllerTest{
 
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(MockMvcResultHandlers.print())
     }
 

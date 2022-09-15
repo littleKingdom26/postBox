@@ -17,7 +17,7 @@ data class MemberResultDTO(
     var nickNameYn:String,
     var publicYn:String,
     var memberKey:Long?,
-    var profileImg: ProfileImgResultDTO?
+    var memberProfile: MemberProfileResultDTO?
 ) {
     constructor(tbMember: TbMember) : this(
         phoneNumber = tbMember.phoneNumber,
@@ -32,7 +32,7 @@ data class MemberResultDTO(
         nickNameYn = tbMember.nickNameYn,
         publicYn = tbMember.publicYn,
         memberKey = tbMember.memberKey,
-        profileImg = tbMember.profileImg?.let { ProfileImgResultDTO(it) }
+        memberProfile = tbMember.profileImg?.let { MemberProfileResultDTO(it) }
     )
 
     fun getMemberName():String{

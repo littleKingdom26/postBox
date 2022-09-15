@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -41,7 +43,12 @@ class MemberRestController {
     @PostMapping(value=["/update"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun memberUpdate(memberUpdateDTO: MemberUpdateDTO,@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO):ApiResponse{
         log.info("MemberRestController.memberUpdate")
-        memberService.update(memberUpdateDTO,authUserDTO)
+        return ApiResponse.ok(memberService.update(memberUpdateDTO, authUserDTO))
+    }
+
+    @ApiOperation(value="회원 파일 삭제", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @DeleteMapping(value=["/delete/{memberFileKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fileDelete(@PathVariable("memberFileKey") memberFileKey:Long, @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
         return ApiResponse.error()
     }
 }

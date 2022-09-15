@@ -4,12 +4,12 @@ POST localhost:8080/login
 Content-Type: application/json
 
 {
-	"userName": "010-2234-7292",
+	"userName": "01022344444",
 	"password": "0000"
 }
 
 ### 01022347292
 ### Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQVRTIiwiZXhwIjoxNjY1NDA3ODY2LCJpYXQiOjE2NjI4MTU4NjYsIm1lbWJlcklkIjoiMDEwMjIzNDcyOTIifQ.ZNvJJJTeyu5G3IvzltJNGP9x2IBueLWeiq-KKOIFSYkB8fDmBg28680T-5X3fEvQ3Uy7ek2kyV8TUlYLNSuBfg
 
-### 010122
-### Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQVRTIiwiZXhwIjoxNjY1Njc4MzA1LCJpYXQiOjE2NjMwODYzMDUsIm1lbWJlcklkIjoiMDEwMTIyIn0.ruplRlQlN9eRw_RM1j3pkeudCGhGdR6ElrBy4NYuZrvR7TdkiN2by1-DHlDjH1s5hgaLf3bhXebw3yHMSGOs6w
+### 01022344444
+### Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQVRTIiwiZXhwIjoxNjY1ODUzNTQ1LCJpYXQiOjE2NjMyNjE1NDUsIm1lbWJlcklkIjoiMDEwMjIzNDQ0NDQifQ.VEt_4V2N9LK1QyKr5vFJaO5HnUN8rKkKFbplurbqvlo2LROh82KjjoEOY7tz3Mo1vFUTkfPon2X1IOXv1r5yyg

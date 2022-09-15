@@ -1,4 +1,4 @@
-package kr.co.postbox.entity.file
+package kr.co.postbox.entity.member
 
 import kr.co.postbox.entity.BaseTimeEntity
 import org.hibernate.annotations.DynamicInsert
@@ -12,14 +12,14 @@ import javax.persistence.Table
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name="TB_POST_BOX_FILE")
-class TbPostBoxFile(
-                var orignalFIleName:String,
-                var fileName:String,
-                var filePath:String,
-                var fileSize:Long) :BaseTimeEntity() {
+@Table(name="TB_MEMBER_FILE")
+class TbMemberFile(
+    var originalFIleName:String,
+    var fileName:String,
+    var filePath:String,
+    var fileSize:Long) :BaseTimeEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var postBoxFileKey: Long? = null
+    var memberFileKey: Long? = null
 }
