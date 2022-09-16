@@ -103,7 +103,7 @@ class RequestService {
                 TbRequestFile(
                     multipartFile.originalFilename ?: "",
                     fileResultDTO.fileName,
-                    fileResultDTO.filePath,
+                    Path.REQUEST.name,
                     fileResultDTO.fileSize ?: 0, request
                 )
             )

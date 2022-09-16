@@ -77,7 +77,7 @@ class MemberService {
                 TbMemberFile(
                     memberSaveDTO.profileImg?.originalFilename ?: "",
                     fileResultDTO.fileName,
-                    fileResultDTO.filePath,
+                    Path.PROFILE.name,
                     fileResultDTO.fileSize ?: 0L
                 )
             )
@@ -112,7 +112,7 @@ class MemberService {
                 TbMemberFile(
                     memberUpdateDTO.profileImg?.originalFilename ?: "",
                     fileResultDTO.fileName,
-                    fileResultDTO.filePath,
+                    Path.PROFILE.name,
                     fileResultDTO.fileSize ?: 0L
                 )
             )
