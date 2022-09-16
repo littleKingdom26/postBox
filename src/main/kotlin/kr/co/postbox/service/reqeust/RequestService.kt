@@ -63,7 +63,7 @@ class RequestService {
 
         val fileResultList = mutableListOf<TbRequestFile>()
         try{
-            requestFileSave(requestSaveDTO.requestFileList, requestSaveEntity, fileResultList)
+            saveRequestFile(requestSaveDTO.requestFileList, requestSaveEntity, fileResultList)
         }catch (e:Exception){
             throw PostBoxException("REQUEST.SAVE.ERROR")
         }
@@ -86,7 +86,7 @@ class RequestService {
         request.update(requestUpdateDTO)
         val fileResultList = mutableListOf<TbRequestFile>()
         try{
-            requestFileSave(requestUpdateDTO.requestFileList, request, fileResultList)
+            saveRequestFile(requestUpdateDTO.requestFileList, request, fileResultList)
         }catch (e:Exception){
             throw PostBoxException("REQUEST.UPDATE.ERROR")
         }
@@ -96,7 +96,7 @@ class RequestService {
     /**
     * 의뢰 파일 저장
      */
-    private fun requestFileSave(requestFileList: List<MultipartFile>?, request: TbRequest?, fileResultList: MutableList<TbRequestFile>) {
+    private fun saveRequestFile(requestFileList: List<MultipartFile>?, request: TbRequest?, fileResultList: MutableList<TbRequestFile>) {
         requestFileList?.forEach { multipartFile ->
             val fileResultDTO = multipartFile.save(Path.REQUEST.path, root)
             val save = requestFileRepository.save(
@@ -124,7 +124,7 @@ class RequestService {
      * 의뢰 파일 삭제
      */
     @Transactional
-    fun requestFileDelete(authUserDTO: AuthUserDTO,requestKey: Long, requestFileKey: Long) {
+    fun deleteRequestFile(authUserDTO: AuthUserDTO, requestKey: Long, requestFileKey: Long) {
         val requestFile = requestFileRepository.findByRequestFileKeyAndRequest_RequestKeyAndRegId(requestFileKey, requestKey, authUserDTO.phoneNumber).orElseThrow { throw PostBoxException("REQUEST.FILE.NOT_FOUND") }
         requestFile?.delete(root)
         requestFileRepository.delete(requestFile)
@@ -139,5 +139,27 @@ class RequestService {
         return requestRepository.findByTitleContainsOrDetailContainsOrMember_NameContainsOrMember_NickNameContainsOrMember_DongContains(
             keyword, keyword, keyword, keyword, keyword, pageRequest
         ).map { RequestPageResultDTO(it) }
+    }
+
+    /**
+    * 의뢰 삭제
+     */
+    fun deleteRequest(requestKey: Long, authUserDTO: AuthUserDTO) {
+        val request = requestRepository.findById(requestKey).orElseThrow { throw PostBoxException("REQUEST.NOT_FOUND") }
+        if (request.regId != authUserDTO.phoneNumber) {
+            throw PostBoxException("REQUEST.NOT_FOUND")
+        }
+        try{
+            val requestFileList = request.requestFileList
+
+            requestFileList?.forEach {
+                it.delete(root)
+                requestFileRepository.delete(it)
+            }
+            requestRepository.delete(request)
+        } catch (e:Exception){
+            e.printStackTrace()
+            throw PostBoxException("REQUEST.DELETE.ERROR")
+        }
     }
 }

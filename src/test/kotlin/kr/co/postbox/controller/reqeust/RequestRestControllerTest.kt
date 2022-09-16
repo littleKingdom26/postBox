@@ -161,4 +161,17 @@ internal class RequestRestControllerTest{
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
     }
+
+    @Test
+    @DisplayName("의뢰목록_삭제")
+    fun requestDelete(){
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/api/request/2")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+
 }

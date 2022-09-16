@@ -64,7 +64,7 @@ class RequestRestController {
     @DeleteMapping(value=["/{requestKey}/{requestFileKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun requestFileDelete(@PathVariable("requestKey") requestKey: Long , @PathVariable("requestFileKey") requestFileKey:Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO):ApiResponse{
         log.info("RequestRestController.requestFileDelete")
-        requestService.requestFileDelete(authUserDTO,requestKey,requestFileKey)
+        requestService.deleteRequestFile(authUserDTO,requestKey,requestFileKey)
         return ApiResponse.okMessage(message = messageSource.getMessage("MESSAGE.DELETE", null, Locale.getDefault()))
     }
 
@@ -76,6 +76,13 @@ class RequestRestController {
     }
 
     // 삭제
+    @ApiOperation(value="의뢰 삭제", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @DeleteMapping(value=["/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun deleteRequest(@PathVariable requestKey: Long,@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
+        log.info("RequestRestController.deleteRequest")
+        requestService.deleteRequest(requestKey,authUserDTO)
+        return ApiResponse.ok()
+    }
 
 
 
