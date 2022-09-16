@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiOperation
 import kr.co.postbox.common.ApiResponse
 import kr.co.postbox.dto.authUser.AuthUserDTO
 import kr.co.postbox.dto.request.RequestSaveDTO
+import kr.co.postbox.dto.request.RequestSearchDTO
 import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.service.reqeust.RequestService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.MessageSource
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
+import java.util.*
 
 @RestController
 @Api(tags = ["request API"], description = "의뢰 api 리스트")
@@ -28,6 +31,9 @@ class RequestRestController {
 
     @set:Autowired
     lateinit var requestService: RequestService
+
+    @set:Autowired
+    lateinit var messageSource: MessageSource
 
     @ApiOperation(value = "의뢰 등록", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @PostMapping(value = ["/save"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
@@ -59,16 +65,20 @@ class RequestRestController {
     fun requestFileDelete(@PathVariable("requestKey") requestKey: Long , @PathVariable("requestFileKey") requestFileKey:Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO):ApiResponse{
         log.info("RequestRestController.requestFileDelete")
         requestService.requestFileDelete(authUserDTO,requestKey,requestFileKey)
-        return ApiResponse.ok()
-
+        return ApiResponse.okMessage(message = messageSource.getMessage("MESSAGE.DELETE", null, Locale.getDefault()))
     }
 
-    // 목록
+    @ApiOperation(value = "의뢰 목록 조회", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @GetMapping(value = ["/page"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun requestPage(requestSearchDTO: RequestSearchDTO) : ApiResponse{
+        log.info("RequestRestController.requestPage")
+        return ApiResponse.ok(requestService.findByPage(requestSearchDTO))
+    }
 
     // 삭제
 
 
-    //
+
 
 
 }

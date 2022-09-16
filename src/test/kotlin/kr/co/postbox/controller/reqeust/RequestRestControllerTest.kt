@@ -124,7 +124,7 @@ internal class RequestRestControllerTest{
     @DisplayName("상세조회")
     fun detail() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/request/detail/6")
+            MockMvcRequestBuilders.get("/api/request/detail/1")
 
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -136,6 +136,27 @@ internal class RequestRestControllerTest{
     fun fileDelete(){
         mockMvc.perform(
             MockMvcRequestBuilders.delete("/api/request/6/17")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("의뢰목록")
+    fun page(){
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/request/page")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("의뢰목록_검색어")
+    fun page_keyword() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/request/page")
+                .queryParam("searchKeyWord", "내소개")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())

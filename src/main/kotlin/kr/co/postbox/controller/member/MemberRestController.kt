@@ -8,15 +8,16 @@ import kr.co.postbox.dto.member.MemberUpdateDTO
 import kr.co.postbox.service.member.MemberService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.MessageSource
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
+import java.util.*
 
 @RestController
 @Api(tags = ["Member API"], description = "회원 api 리스트")
@@ -27,6 +28,9 @@ class MemberRestController {
 
     @set:Autowired
     lateinit var memberService: MemberService
+
+    @set:Autowired
+    lateinit var messageSource: MessageSource
 
 
     // 프로필 정보 조회
@@ -47,8 +51,10 @@ class MemberRestController {
     }
 
     @ApiOperation(value="회원 파일 삭제", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
-    @DeleteMapping(value=["/delete/{memberFileKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun fileDelete(@PathVariable("memberFileKey") memberFileKey:Long, @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
-        return ApiResponse.error()
+    @DeleteMapping(value=["/delete/memberFile"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun fileDelete(@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
+        log.info("MemberRestController.fileDelete")
+        memberService.deleteProfileImg(authUserDTO)
+        return ApiResponse.okMessage(message = messageSource.getMessage("MESSAGE.DELETE",null, Locale.getDefault()) )
     }
 }

@@ -9,7 +9,7 @@ import kr.co.postbox.entity.request.TbRequest
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.server.mvc.linkTo
 
-data class RequestResultDTO(
+data class RequestPageResultDTO(
     @ApiModelProperty(value = "의뢰요청키", required = true)
     var requestKey:Long?,
     @ApiModelProperty(value = "제목", required = true)
@@ -28,7 +28,9 @@ data class RequestResultDTO(
     var imgFileList:List<RequestFileResultDTO>?,
     @ApiModelProperty(value="작성자")
     var member: MemberResultDTO,
-    @ApiModelProperty(value = "상세링크")
+    @ApiModelProperty(value = "지원자 숫자")
+    var aidCount: Int?=0,
+    @ApiModelProperty(value="상세링크")
     var _links: Link? = null
 ) {
     constructor(tbRequest: TbRequest) : this(
@@ -41,7 +43,8 @@ data class RequestResultDTO(
         price = tbRequest.price,
         imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) },
         member = MemberResultDTO(tbRequest.member),
-        _links=linkTo<RequestRestController> { detail(tbRequest.requestKey?:0L) }.withSelfRel()
+        aidCount = tbRequest.aidList?.size,
+        _links =linkTo<RequestRestController> { detail(tbRequest.requestKey?:0L) }.withSelfRel()
     )
 
     fun getCategoryName():String{

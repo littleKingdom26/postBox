@@ -3,9 +3,7 @@ package kr.co.postbox.service.reqeust
 import kr.co.postbox.code.Path
 import kr.co.postbox.config.exception.PostBoxException
 import kr.co.postbox.dto.authUser.AuthUserDTO
-import kr.co.postbox.dto.request.RequestResultDTO
-import kr.co.postbox.dto.request.RequestSaveDTO
-import kr.co.postbox.dto.request.RequestUpdateDTO
+import kr.co.postbox.dto.request.*
 import kr.co.postbox.entity.request.TbRequest
 import kr.co.postbox.entity.request.TbRequestFile
 import kr.co.postbox.repository.member.MemberRepository
@@ -16,6 +14,9 @@ import kr.co.postbox.utils.save
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -38,6 +39,9 @@ class RequestService {
     @Value("\${file.upload.path}")
     lateinit var root: String
 
+    /**
+    * 의뢰 등록
+     */
     @Transactional
     fun save(requestSaveDTO: RequestSaveDTO, authUserDTO: AuthUserDTO) : RequestResultDTO {
 
@@ -50,6 +54,7 @@ class RequestService {
             requestSaveDTO.detail ?: "",
             requestSaveDTO.negotiationYn.name,
             requestSaveDTO.price ?: -1,
+            null,
             null,
             null,
             member
@@ -88,6 +93,9 @@ class RequestService {
         return RequestResultDTO(request)
     }
 
+    /**
+    * 의뢰 파일 저장
+     */
     private fun requestFileSave(requestFileList: List<MultipartFile>?, request: TbRequest?, fileResultList: MutableList<TbRequestFile>) {
         requestFileList?.forEach { multipartFile ->
             val fileResultDTO = multipartFile.save(Path.REQUEST.path, root)
@@ -118,13 +126,18 @@ class RequestService {
     @Transactional
     fun requestFileDelete(authUserDTO: AuthUserDTO,requestKey: Long, requestFileKey: Long) {
         val requestFile = requestFileRepository.findByRequestFileKeyAndRequest_RequestKeyAndRegId(requestFileKey, requestKey, authUserDTO.phoneNumber).orElseThrow { throw PostBoxException("REQUEST.FILE.NOT_FOUND") }
-        try{
-            requestFile.delete(root)
-        }catch (e:Exception){
-            e.printStackTrace()
-            log.debug("파일없음")
-        }
+        requestFile?.delete(root)
         requestFileRepository.delete(requestFile)
+    }
 
+    /**
+      *   의뢰 목록 조회
+     */
+    fun findByPage(requestSearchDTO: RequestSearchDTO): Page<RequestPageResultDTO> {
+        val pageRequest = PageRequest.of(requestSearchDTO.currentPage, requestSearchDTO.pageSize, Sort.by("requestKey").descending())
+        val keyword = requestSearchDTO.searchKeyword?:""
+        return requestRepository.findByTitleContainsOrDetailContainsOrMember_NameContainsOrMember_NickNameContainsOrMember_DongContains(
+            keyword, keyword, keyword, keyword, keyword, pageRequest
+        ).map { RequestPageResultDTO(it) }
     }
 }

@@ -103,11 +103,10 @@ internal class MemberRestControllerTest{
     @DisplayName("회원프로필 삭제")
     fun memberFileDelete(){
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/api/member/delete/1"))
+            MockMvcRequestBuilders.delete("/api/member/delete/memberFile"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
-
     }
 
 }

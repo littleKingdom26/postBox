@@ -102,7 +102,6 @@ class MemberService {
     @Transactional
     fun update(memberUpdateDTO: MemberUpdateDTO, authUserDTO: AuthUserDTO) : MemberResultDTO {
 
-
         val member = memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("MEMBER.NOT_FOUND") }
 
         member.update(memberUpdateDTO)
@@ -125,6 +124,15 @@ class MemberService {
 
         return MemberResultDTO(member)
 
+    }
+
+    @Transactional
+    fun deleteProfileImg(authUserDTO: AuthUserDTO) {
+        val member = memberRepository.findById(authUserDTO.memberKey).orElseThrow { throw PostBoxException("MEMBER.NOT_FOUND") }
+        val profileImg = member.profileImg
+        member.profileImg = null
+        profileImg?.also{ memberFileRepository.delete(it)}
+        profileImg?.delete(root)
     }
 
 

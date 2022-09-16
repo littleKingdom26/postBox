@@ -4,10 +4,10 @@ import kr.co.postbox.dto.request.RequestUpdateDTO
 import kr.co.postbox.entity.BaseTimeEntity
 import kr.co.postbox.entity.aid.TbAid
 import kr.co.postbox.entity.member.TbMember
+import kr.co.postbox.entity.selection.TbSelection
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*
-
 
 @DynamicInsert
 @DynamicUpdate
@@ -20,8 +20,10 @@ class TbRequest(
     var detail:String?,
     var negotiationYn:String,
     var price:Long,
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "tbRequest")
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
     var aidList:List<TbAid>?=null,
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
+    var selectionList: List<TbSelection>? = null,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
     var requestFileList:List<TbRequestFile>?=null,
     @ManyToOne(fetch = FetchType.LAZY)
