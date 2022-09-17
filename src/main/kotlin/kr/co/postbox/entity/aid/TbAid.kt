@@ -18,7 +18,7 @@ class TbAid(
     var member: TbMember,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="REQUEST_KEY")
-    var request: TbRequest?=null,
+    var request: TbRequest,
     ):BaseTimeEntity() {
 
     @Id

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.context.WebApplicationContext
@@ -62,7 +61,7 @@ internal class SignRestControllerTest{
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
-        info.set("phoneNumber","010-2234-7292")
+        info.set("phoneNumber","010-2234-3333")
         info.set("name","윤태호")
         info.set("age","41")
         info.set("sex", Sex.MALE.name)

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
@@ -78,11 +79,22 @@ class RequestRestController {
     // 삭제
     @ApiOperation(value="의뢰 삭제", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @DeleteMapping(value=["/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteRequest(@PathVariable requestKey: Long,@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
+    fun deleteRequest(@PathVariable("requestKey") requestKey: Long,@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
         log.info("RequestRestController.deleteRequest")
         requestService.deleteRequest(requestKey,authUserDTO)
         return ApiResponse.ok()
     }
+
+    //의뢰신청
+    @ApiOperation(value = "의뢰 신청", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @PutMapping(value = ["/apply/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun applyAid(@PathVariable("requestKey") requestKey: Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
+        log.info("RequestRestController.applyRequest")
+
+        return ApiResponse.ok(requestService.applyAid(requestKey, authUserDTO))
+    }
+
+    //신청자 선정
 
 
 

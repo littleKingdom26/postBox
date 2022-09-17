@@ -173,5 +173,27 @@ internal class RequestRestControllerTest{
             .andDo(MockMvcResultHandlers.print())
     }
 
+    @Test
+    @DisplayName("의뢰 신청_본인꺼 신청")
+    fun requestApplySelt(){
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/request/apply/1")
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("의뢰 신청")
+    @WithUserDetails("01022343333")
+    fun requestApply() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/request/apply/1")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andDo(MockMvcResultHandlers.print())
+    }
 
 }
