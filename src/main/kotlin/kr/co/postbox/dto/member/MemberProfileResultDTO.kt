@@ -1,5 +1,6 @@
 package kr.co.postbox.dto.member
 
+import kr.co.postbox.code.Path
 import kr.co.postbox.entity.member.TbMemberFile
 
 data class MemberProfileResultDTO(
@@ -16,5 +17,7 @@ data class MemberProfileResultDTO(
         filePath = tbMemberFile.filePath,
         fileSize = tbMemberFile.fileSize
     )
+
+    fun getProfileImgUrl(): String = "/imageView/" + Path.valueOf(filePath).path + "/" + fileName
 
 }

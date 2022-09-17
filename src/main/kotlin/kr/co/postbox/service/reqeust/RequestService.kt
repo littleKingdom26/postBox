@@ -5,13 +5,16 @@ import kr.co.postbox.config.exception.PostBoxException
 import kr.co.postbox.dto.aid.AidResultDTO
 import kr.co.postbox.dto.authUser.AuthUserDTO
 import kr.co.postbox.dto.request.*
+import kr.co.postbox.dto.selection.SelectionResultDTO
 import kr.co.postbox.entity.aid.TbAid
 import kr.co.postbox.entity.request.TbRequest
 import kr.co.postbox.entity.request.TbRequestFile
+import kr.co.postbox.entity.selection.TbSelection
 import kr.co.postbox.repository.aid.AidRepository
 import kr.co.postbox.repository.member.MemberRepository
 import kr.co.postbox.repository.request.RequestFileRepository
 import kr.co.postbox.repository.request.RequestRepository
+import kr.co.postbox.repository.selection.SelectionRepository
 import kr.co.postbox.utils.delete
 import kr.co.postbox.utils.save
 import org.slf4j.LoggerFactory
@@ -40,6 +43,9 @@ class RequestService {
 
     @set:Autowired
     lateinit var aidRepository: AidRepository
+
+    @set:Autowired
+    lateinit var selectionRepository: SelectionRepository
 
     @Value("\${file.upload.path}")
     lateinit var root: String
@@ -179,5 +185,21 @@ class RequestService {
 
         val member = memberRepository.findById(authUserDTO.memberKey).get()
         return AidResultDTO(aidRepository.save(TbAid(member, request)))
+    }
+
+    /**
+     * 의뢰 선정
+     */
+    fun selectionAid(aidKey: Long, authUserDTO: AuthUserDTO) : SelectionResultDTO {
+        val aid = aidRepository.findById(aidKey).orElseThrow { throw PostBoxException("REQUEST.CHOOSE.AID.NOT_FOUNT") }
+        if (aid.request.member.memberKey != authUserDTO.memberKey) {
+            throw PostBoxException("REQUEST.CHOOSE.REQUEST.NOT_SELF")
+        }
+
+        if (aid.member.memberKey == authUserDTO.memberKey) {
+            throw PostBoxException("REQUEST.CHOOSE.AID.SELF")
+        }
+
+        return SelectionResultDTO(selectionRepository.save(TbSelection(aid.member, aid.request)))
     }
 }

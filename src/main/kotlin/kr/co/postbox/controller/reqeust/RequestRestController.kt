@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
@@ -87,14 +86,20 @@ class RequestRestController {
 
     //의뢰신청
     @ApiOperation(value = "의뢰 신청", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
-    @PutMapping(value = ["/apply/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/apply/{requestKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun applyAid(@PathVariable("requestKey") requestKey: Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
         log.info("RequestRestController.applyRequest")
-
         return ApiResponse.ok(requestService.applyAid(requestKey, authUserDTO))
     }
 
     //신청자 선정
+    @ApiOperation(value = "신청자 선정", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @PostMapping(value = ["/selection/{aidKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun selectionAid(@PathVariable("aidKey") aidKey:Long, @ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse{
+        log.info("RequestRestController.selectionAid")
+        return ApiResponse.ok(requestService.selectionAid(aidKey, authUserDTO))
+    }
+
 
 
 

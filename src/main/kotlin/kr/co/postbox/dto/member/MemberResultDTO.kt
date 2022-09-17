@@ -35,45 +35,40 @@ data class MemberResultDTO(
         memberProfile = tbMember.profileImg?.let { MemberProfileResultDTO(it) }
     )
 
-    fun getMemberName():String{
-        return when (nickNameYn) {
-            CodeYn.Y.name -> name
-            else -> nickName ?: ""
-        }
-    }
-    fun getPublicAge():String{
-        return when(publicYn){
-            CodeYn.Y.name -> age
-            else -> "비공개"
+    fun getMemberName(): String = when (nickNameYn) {
 
-        }
+        CodeYn.Y.name -> name
+        else -> nickName ?: ""
     }
 
-    fun getPublicSex():String{
-        return when(publicYn){
-            CodeYn.Y.name -> sex
-            else -> "비공개"
-        }
+    fun getPublicAge(): String = when (publicYn) {
+        CodeYn.Y.name -> age
+        else -> "비공개"
+
     }
 
-    fun getPublicAddress():String{
-        return when(publicYn){
-            CodeYn.Y.name -> address?:""
-            else -> "비공개"
-        }
+
+    fun getPublicSex(): String = when (publicYn) {
+        CodeYn.Y.name -> sex
+        else -> "비공개"
     }
 
-    fun getPublicSi():String{
-        return when (publicYn) {
+
+    fun getPublicAddress(): String = when (publicYn) {
+        CodeYn.Y.name -> address ?: ""
+        else -> "비공개"
+    }
+
+
+    fun getPublicSi():String = when (publicYn) {
             CodeYn.Y.name -> si ?: ""
             else -> "비공개"
         }
+
+
+    fun getPublicDong(): String = when (publicYn) {
+        CodeYn.Y.name -> dong ?: ""
+        else -> "비공개"
     }
 
-    fun getPublicDong(): String {
-        return when (publicYn) {
-            CodeYn.Y.name -> dong ?: ""
-            else -> "비공개"
-        }
-    }
 }

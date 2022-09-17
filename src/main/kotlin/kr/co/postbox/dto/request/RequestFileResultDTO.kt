@@ -1,5 +1,6 @@
 package kr.co.postbox.dto.request
 
+import kr.co.postbox.code.Path
 import kr.co.postbox.entity.request.TbRequestFile
 
 data class RequestFileResultDTO(
@@ -14,4 +15,6 @@ data class RequestFileResultDTO(
         fileName = tbRequestFile.fileName,
         filePath = tbRequestFile.filePath,
         fileSize = tbRequestFile.fileSize)
+
+    fun getRequestImgUrl(): String = "/imageView/" + Path.valueOf(filePath).path + "/" + fileName
 }

@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiModelProperty
 import kr.co.postbox.code.RequestCategory
 import kr.co.postbox.code.RequestSex
 import kr.co.postbox.controller.reqeust.RequestRestController
+import kr.co.postbox.dto.aid.AidResultDTO
 import kr.co.postbox.dto.member.MemberResultDTO
+import kr.co.postbox.dto.selection.SelectionResultDTO
 import kr.co.postbox.entity.request.TbRequest
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.server.mvc.linkTo
@@ -28,6 +30,10 @@ data class RequestResultDTO(
     var imgFileList:List<RequestFileResultDTO>?,
     @ApiModelProperty(value="작성자")
     var member: MemberResultDTO,
+    @ApiModelProperty(value="신청자목록")
+    var aidList:List<AidResultDTO>?=null,
+    @ApiModelProperty(value="선정자목록")
+    var selectionList: List<SelectionResultDTO>?=null,
     @ApiModelProperty(value = "상세링크")
     var _links: Link? = null
 ) {
@@ -41,7 +47,9 @@ data class RequestResultDTO(
         price = tbRequest.price,
         imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) },
         member = MemberResultDTO(tbRequest.member),
-        _links=linkTo<RequestRestController> { detail(tbRequest.requestKey?:0L) }.withSelfRel()
+        aidList = tbRequest.aidList?.map { AidResultDTO(it) },
+        selectionList = tbRequest.selectionList?.map { SelectionResultDTO(it) },
+        _links = linkTo<RequestRestController> { detail(tbRequest.requestKey ?: 0L) }.withSelfRel()
     )
 
     fun getCategoryName():String{

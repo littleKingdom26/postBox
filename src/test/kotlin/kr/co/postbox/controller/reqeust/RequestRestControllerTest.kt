@@ -125,10 +125,10 @@ internal class RequestRestControllerTest{
     fun detail() {
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/request/detail/1")
-
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
             .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
     }
 
     @Test
@@ -189,11 +189,22 @@ internal class RequestRestControllerTest{
     @WithUserDetails("01022343333")
     fun requestApply() {
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/api/request/apply/1")
+            MockMvcRequestBuilders.post("/api/request/apply/1")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test
+    @DisplayName("신청자 선정")
+    fun requestChoose(){
+        mockMvc.perform(
+        MockMvcRequestBuilders.post("/api/request/selection/2"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+
     }
 
 }

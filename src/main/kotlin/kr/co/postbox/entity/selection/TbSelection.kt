@@ -15,6 +15,7 @@ class TbSelection(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_KEY")
     var member: TbMember,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REQUEST_KEY")
     var request: TbRequest? = null
