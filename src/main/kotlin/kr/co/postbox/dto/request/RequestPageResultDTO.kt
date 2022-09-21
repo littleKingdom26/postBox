@@ -24,6 +24,10 @@ data class RequestPageResultDTO(
     var negotiationYn:String,
     @ApiModelProperty(value = "가격", required = true)
     var price:Long,
+    @ApiModelProperty(value="동", required = false)
+    var dong:String?,
+    @ApiModelProperty(value="시", required = false)
+    var si:String?,
     @ApiModelProperty(value = "이미지 리스트")
     var imgFileList:List<RequestFileResultDTO>?,
     @ApiModelProperty(value="작성자")
@@ -41,6 +45,8 @@ data class RequestPageResultDTO(
         sex = tbRequest.sex,
         negotiationYn = tbRequest.negotiationYn,
         price = tbRequest.price,
+        dong = tbRequest.dong,
+        si = tbRequest.si,
         imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) },
         member = MemberResultDTO(tbRequest.member),
         aidCount = tbRequest.aidList?.size,

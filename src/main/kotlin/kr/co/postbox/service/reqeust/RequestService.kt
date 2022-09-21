@@ -65,6 +65,8 @@ class RequestService {
             requestSaveDTO.detail ?: "",
             requestSaveDTO.negotiationYn.name,
             requestSaveDTO.price ?: -1,
+            member.dong,
+            member.si,
             null,
             null,
             null,

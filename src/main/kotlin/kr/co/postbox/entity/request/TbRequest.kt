@@ -20,6 +20,8 @@ class TbRequest(
     var detail:String?,
     var negotiationYn:String,
     var price:Long,
+    var dong:String?,
+    var si:String?,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
     var aidList:List<TbAid>?=null,
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "request")
