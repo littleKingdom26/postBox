@@ -43,6 +43,7 @@ class MemberRestController {
     }
 
     // 프로필 수정
+
     @ApiOperation(value="회원 정보 수정",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @PostMapping(value=["/update"], produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun memberUpdate(memberUpdateDTO: MemberUpdateDTO,@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO):ApiResponse{
