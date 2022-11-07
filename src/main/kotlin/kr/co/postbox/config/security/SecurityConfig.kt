@@ -61,7 +61,7 @@ class SecurityConfig(
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/api/member/**").authenticated()
-            .antMatchers("/api/login", "/api/sign/**","/imageView/**","/fileDownload/**").permitAll()
+            .antMatchers("/api/login","/api/code/**", "/api/sign/**","/imageView/**","/fileDownload/**").permitAll()
             .anyRequest().authenticated()
             .and().cors()
             .and().addFilter(JwtAuthenticationFilter(authenticationManagerBean(), userService))

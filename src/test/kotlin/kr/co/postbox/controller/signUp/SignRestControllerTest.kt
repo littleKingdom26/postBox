@@ -61,7 +61,7 @@ internal class SignRestControllerTest{
         val uploadFile = FileInputStream(file)
         val multipartFile = MockMultipartFile("profileImg", file.name, MediaType.MULTIPART_FORM_DATA_VALUE, uploadFile)
         val info: MultiValueMap<String, String> = LinkedMultiValueMap()
-        info.set("phoneNumber","010-2234-3333")
+        info.set("phoneNumber","010-2234-1122")
         info.set("name","윤태호")
         info.set("age","41")
         info.set("sex", Sex.MALE.name)
@@ -80,10 +80,11 @@ internal class SignRestControllerTest{
                 .params(info)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
-            .andDo(MockMvcResultHandlers.print())
+
     }
 
     @Test

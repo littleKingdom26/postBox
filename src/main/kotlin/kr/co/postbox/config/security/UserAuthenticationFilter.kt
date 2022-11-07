@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletResponse
 class UserAuthenticationFilter(authenticationManager: AuthenticationManager): UsernamePasswordAuthenticationFilter(authenticationManager) {
 
     private val log = LoggerFactory.getLogger(UserAuthenticationFilter::class.java)
-
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
 
-        var userName =""
-        var password =""
+        var userName: String
+        var password: String
 
         val header = request.getHeader("Content-Type")
-        if (MediaType.APPLICATION_JSON_VALUE.equals(header)) {
+        log.debug("header $header")
+        if (header.contains(MediaType.APPLICATION_JSON_VALUE)) {
             val readLines: List<String> = request.reader.readLines()
             val flatMap: String = readLines.joinToString("")
             val jsonObject: JsonObject = JsonParser.parseString(flatMap).asJsonObject

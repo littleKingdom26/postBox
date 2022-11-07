@@ -15,7 +15,7 @@ class JWTUtils {
         private val subject = "Auth"
         private val secretKey = "postBox"
         private val algorithm: Algorithm = Algorithm.HMAC512(secretKey)
-        private val expiration = 60L * 60 * 24 * 30 * 1000 // 임시로 한달 토큰 발행 durltj
+        private val expiration = 60L * 60 * 24 * 30 * 1000 // 임시로 한달 토큰 발행
 
         val tokenPrefix = "Bearer "
         val headerString = "Authorization"
