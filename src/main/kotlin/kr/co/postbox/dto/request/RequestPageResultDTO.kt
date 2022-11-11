@@ -34,6 +34,8 @@ data class RequestPageResultDTO(
     var member: MemberResultDTO,
     @ApiModelProperty(value = "지원자 숫자")
     var aidCount: Int?=0,
+    @ApiModelProperty(value="신청자 숫지")
+    var selectedCount: Int?=0,
     @ApiModelProperty(value="상세링크")
     var _links: Link? = null
 ) {
@@ -50,6 +52,7 @@ data class RequestPageResultDTO(
         imgFileList = tbRequest.requestFileList?.map { RequestFileResultDTO(it) },
         member = MemberResultDTO(tbRequest.member),
         aidCount = tbRequest.aidList?.size,
+        selectedCount = tbRequest.selectionList?.size,
         _links =linkTo<RequestRestController> { detail(tbRequest.requestKey?:0L) }.withSelfRel()
     )
 

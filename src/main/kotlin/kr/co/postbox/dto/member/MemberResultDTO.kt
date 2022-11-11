@@ -36,8 +36,7 @@ data class MemberResultDTO(
     )
 
     fun getMemberName(): String = when (nickNameYn) {
-
-        CodeYn.Y.name -> name
+        CodeYn.N.name -> name
         else -> nickName ?: ""
     }
 
