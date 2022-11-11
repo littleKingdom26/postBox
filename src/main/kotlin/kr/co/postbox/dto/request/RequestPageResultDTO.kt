@@ -60,4 +60,12 @@ data class RequestPageResultDTO(
     fun getSexName():String{
         return RequestSex.valueOf(sex).codeName
     }
+
+    fun getTitleImg():String? {
+        return if(imgFileList.orEmpty().isNotEmpty()){
+            imgFileList?.get(0)?.getRequestImgUrl()
+        }else{
+            null
+        }
+    }
 }

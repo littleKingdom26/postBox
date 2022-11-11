@@ -16,5 +16,5 @@ data class RequestFileResultDTO(
         filePath = tbRequestFile.filePath,
         fileSize = tbRequestFile.fileSize)
 
-    fun getRequestImgUrl(): String = "/imageView/" + Path.valueOf(filePath).path + "/" + fileName
+    fun getRequestImgUrl(): String = "/imageView/" + Path.valueOf(filePath).name + "/" + fileName
 }

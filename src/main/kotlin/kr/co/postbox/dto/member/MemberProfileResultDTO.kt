@@ -18,6 +18,6 @@ data class MemberProfileResultDTO(
         fileSize = tbMemberFile.fileSize
     )
 
-    fun getProfileImgUrl(): String = "/imageView/" + Path.valueOf(filePath).path + "/" + fileName
+    fun getProfileImgUrl(): String = "/imageView/" + Path.valueOf(filePath).name + "/" + fileName
 
 }
