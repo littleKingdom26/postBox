@@ -8,6 +8,7 @@ import kr.co.postbox.dto.member.MemberResultDTO
 import kr.co.postbox.entity.request.TbRequest
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.server.mvc.linkTo
+import java.time.LocalDateTime
 
 data class RequestPageResultDTO(
     @ApiModelProperty(value = "의뢰요청키", required = true)
@@ -36,6 +37,8 @@ data class RequestPageResultDTO(
     var aidCount: Int?=0,
     @ApiModelProperty(value="신청자 숫지")
     var selectedCount: Int?=0,
+    @ApiModelProperty(value="작성 일시")
+    val regDt:LocalDateTime,
     @ApiModelProperty(value="상세링크")
     var _links: Link? = null
 ) {
@@ -53,6 +56,7 @@ data class RequestPageResultDTO(
         member = MemberResultDTO(tbRequest.member),
         aidCount = tbRequest.aidList?.size,
         selectedCount = tbRequest.selectionList?.size,
+        regDt = tbRequest.regDt,
         _links =linkTo<RequestRestController> { detail(tbRequest.requestKey?:0L) }.withSelfRel()
     )
 
