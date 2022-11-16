@@ -184,7 +184,10 @@ class RequestService {
         if (request.member.memberKey==authUserDTO.memberKey) {
             throw PostBoxException("REQUEST.APPLY.SELF")
         }
-
+        val aidList = aidRepository.findByMember_MemberKey(authUserDTO.memberKey)
+        if (aidList.isNotEmpty()) {
+            throw PostBoxException("REQUEST.APPLY.DUPLICATE")
+        }
         val member = memberRepository.findById(authUserDTO.memberKey).get()
         return AidResultDTO(aidRepository.save(TbAid(member, request)))
     }

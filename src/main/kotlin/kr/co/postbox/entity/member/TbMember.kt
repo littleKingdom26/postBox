@@ -22,7 +22,7 @@ class TbMember(var phoneNumber:String,
                var nickNameYn:String,
                var publicYn:String,
                var marketingAgree: String,
-               var heart:String?,
+               var heart:Long?,
                var memberPassword:String,
                var role:String,
                @OneToOne(fetch = FetchType.LAZY)

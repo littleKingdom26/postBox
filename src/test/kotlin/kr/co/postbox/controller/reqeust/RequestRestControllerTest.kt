@@ -185,15 +185,28 @@ internal class RequestRestControllerTest{
     }
 
     @Test
-    @DisplayName("의뢰 신청")
+    @DisplayName("의뢰 신청_중복신청")
     @WithUserDetails("01022343333")
+    fun requestApply_duplicate() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/request/apply/1")
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+
+    }
+
+    @Test
+    @DisplayName("의뢰 신청")
+    @WithUserDetails("01054840852")
     fun requestApply() {
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/request/apply/1")
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
-            .andDo(MockMvcResultHandlers.print())
+
     }
 
     @Test

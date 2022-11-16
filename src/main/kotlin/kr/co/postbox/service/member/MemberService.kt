@@ -64,7 +64,7 @@ class MemberService {
             memberSaveDTO.nickNameYn.name,
             memberSaveDTO.publicYn.name,
             memberSaveDTO.marketingAgree.name,
-            "0",
+            0,
             encoderPassword,
             Role.USER.name,
             null

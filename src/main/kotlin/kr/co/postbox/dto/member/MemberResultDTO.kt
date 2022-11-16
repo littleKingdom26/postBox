@@ -17,6 +17,7 @@ data class MemberResultDTO(
     var nickNameYn:String,
     var publicYn:String,
     var memberKey:Long?,
+    val heart:Long?,
     var memberProfile: MemberProfileResultDTO?
 ) {
     constructor(tbMember: TbMember) : this(
@@ -32,6 +33,7 @@ data class MemberResultDTO(
         nickNameYn = tbMember.nickNameYn,
         publicYn = tbMember.publicYn,
         memberKey = tbMember.memberKey,
+        heart = tbMember.heart,
         memberProfile = tbMember.profileImg?.let { MemberProfileResultDTO(it) }
     )
 
