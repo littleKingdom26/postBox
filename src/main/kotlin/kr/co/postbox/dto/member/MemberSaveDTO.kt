@@ -14,7 +14,7 @@ data class MemberSaveDTO (
     var age: Long,
     @ApiModelProperty(value = "성별", required = true)
     var sex: Sex,
-    @ApiModelProperty(value = "주소")
+    @ApiModelProperty(value = "주소", required = true)
     var address: String,
     @ApiModelProperty(value = "시/구군")
     var si : String?,
@@ -24,11 +24,11 @@ data class MemberSaveDTO (
     var introduce:String?,
     @ApiModelProperty(value = "닉네임")
     var nickName:String?,
-    @ApiModelProperty(value = "닉네임 소개")
+    @ApiModelProperty(value = "닉네임 소개", required = true)
     var nickNameYn: CodeYn,
-    @ApiModelProperty(value = "정보공개여부")
+    @ApiModelProperty(value = "정보공개여부", required = true)
     var publicYn: CodeYn,
-    @ApiModelProperty(value = "마케팅 수신 여부")
+    @ApiModelProperty(value = "마케팅 수신 여부", required = true)
     var marketingAgree: CodeYn,
     @ApiModelProperty(value = "첨부 파일")
     var profileImg: MultipartFile?

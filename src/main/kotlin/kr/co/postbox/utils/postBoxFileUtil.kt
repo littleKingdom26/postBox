@@ -28,7 +28,7 @@ fun TbRequestFile.delete(root:String){
     val filePath = this.filePath
     val fileName = this.fileName
     val file = File(root + File.separator + filePath + File.separator + fileName)
-    takeIf { file.isFile }?.let { file.delete() }
+    file.isFile.takeIf { true }?.apply { file.delete() }
 }
 
 fun TbMemberFile.delete(root: String) {

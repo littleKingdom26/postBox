@@ -13,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -36,10 +37,18 @@ class MemberRestController {
     // 프로필 정보 조회
     @ApiOperation(value="회원 정보조회",notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
     @GetMapping(value= ["/info"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun memberInfo(@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
-        log.info("MemberRestController.memberInfo")
+    fun myInfo(@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO): ApiResponse {
+        log.info("MemberRestController.myInfo")
         log.debug(authUserDTO.memberKey.toString())
         return ApiResponse.ok(memberService.findById(authUserDTO.memberKey))
+    }
+
+    // 회원정보 조회
+    @ApiOperation(value = "회원 정보조회", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @GetMapping(value = ["/info/{memberKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun memberInfo(@ApiIgnore @AuthenticationPrincipal authUserDTO: AuthUserDTO,@PathVariable("memberKey")memberKey:Long): ApiResponse {
+        log.info("MemberRestController.memberInfo")
+        return ApiResponse.ok(memberService.findById(memberKey))
     }
 
     // 프로필 수정
