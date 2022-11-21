@@ -220,4 +220,16 @@ internal class RequestRestControllerTest{
 
     }
 
+    @Test
+    @DisplayName("신청자 상세")
+    fun requestAidDetail() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/request/aid/1/3")
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+
+    }
+
 }

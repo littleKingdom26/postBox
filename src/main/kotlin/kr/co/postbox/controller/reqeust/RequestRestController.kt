@@ -100,6 +100,14 @@ class RequestRestController {
         return ApiResponse.ok(requestService.selectionAid(aidKey, authUserDTO))
     }
 
+    // 신청자 상세 보기
+    @ApiOperation(value = "의뢰 상세보기", notes = "## Request ##\n" + "[하위 Parameters 참고]\n\n\n\n" + "## Response ## \n" + "[하위 Model 참고]\n\n\n\n")
+    @GetMapping(value = ["/aid/{requestKey}/{aidKey}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun aidDetail(@PathVariable("requestKey") requestKey: Long,@PathVariable("aidKey") aidKey: Long): ApiResponse {
+        log.info("RequestRestController.aidDetail")
+        return ApiResponse.ok(requestService.findByAidDetail(requestKey,aidKey))
+    }
+
 
 
 

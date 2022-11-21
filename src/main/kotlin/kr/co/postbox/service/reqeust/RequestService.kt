@@ -207,4 +207,11 @@ class RequestService {
 
         return SelectionResultDTO(selectionRepository.save(TbSelection(aid.member, aid.request)))
     }
+
+    /**
+    * 신청자 상세 보기
+     */
+    fun findByAidDetail(requestKey: Long, aidKey: Long): AidResultDTO {
+        return AidResultDTO(aidRepository.findByRequest_RequestKeyAndAidKey(requestKey, aidKey))
+    }
 }

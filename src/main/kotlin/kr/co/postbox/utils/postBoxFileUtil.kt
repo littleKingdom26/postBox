@@ -19,6 +19,7 @@ fun MultipartFile?.save(subFolder: String?,root:String): FileResultDTO {
     val newFileName = makeFileName(this)
     val newFilePath = makeCreateDirectory(subFolder ?: "default", newFileName, root)
     val newFile = File(newFilePath)
+    // 용량 줄이기
     newFile.createNewFile()
     this?.transferTo(newFile)
     return FileResultDTO(newFileName, subFolder?: "default", this?.size, newFilePath)

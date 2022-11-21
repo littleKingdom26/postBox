@@ -8,4 +8,8 @@ interface AidRepository : JpaRepository<TbAid,Long> {
 
     fun findByMember_MemberKey(memberKey: Long): List<TbAid>
 
+
+    fun findByRequest_RequestKeyAndAidKey(requestKey: Long, aidKey: Long): TbAid
+
+
 }
