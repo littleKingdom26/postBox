@@ -22,3 +22,51 @@ Content-Type: application/json
 
 ### 01022341111
 ### Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQVRTIiwiZXhwIjoxNjY1OTgwNjA4LCJpYXQiOjE2NjMzODg2MDgsIm1lbWJlcklkIjoiMDEwMjIzNDExMTEifQ.Bw_OBSZOR_yxQtB7GYRvtnJixBtAGph68Ygg5qelBw0Qm3Om81tRpMedZUrD327o62zYvpfeRgGEL7sxGaV7vw
+
+
+POST http://localhost:8080/api/request/save
+accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoIiwiaXNzIjoiQVRTIiwiZXhwIjoxNjcxNzc4NjY0LCJpYXQiOjE2NjkxODY2NjQsIm1lbWJlcklkIjoiMDEwMjIzNDcyOTIifQ.rRjRBZeBnqyIyTntMoi-yj70qr6tKmgT9J95BBEh2NUzAKh6b2TyLttMQ9CTWEpU_EdO-BtnkMBRFJmROS4DAA
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="category"
+
+TOGETHER
+--WebAppBoundary
+Content-Disposition: form-data; name="detail"
+
+합께합싣아!!!
+--WebAppBoundary
+Content-Disposition: form-data; name="negotiationYn"
+
+N
+--WebAppBoundary
+Content-Disposition: form-data; name="price"
+
+2000
+--WebAppBoundary
+Content-Disposition: form-data; name="requestFileList"; filename="externalFile (16).jpg"
+
+< externalFile (16).jpg
+--WebAppBoundary
+Content-Disposition: form-data; name="requestFileList"; filename="KakaoTalk_20190129_001153306.jpg"
+
+< KakaoTalk_20190129_001153306.jpg
+--WebAppBoundary
+Content-Disposition: form-data; name="requestFileList"; filename="3050_1.jpg"
+
+< 3050_1.jpg
+--WebAppBoundary
+Content-Disposition: form-data; name="sex"
+
+FEMALE
+--WebAppBoundary
+Content-Disposition: form-data; name="title"
+
+함께합시다!!
+--WebAppBoundary--
+
+###
+
+
